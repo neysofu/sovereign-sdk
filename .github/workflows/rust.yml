@@ -88,8 +88,7 @@ jobs:
           fi
   # Check that every combination of features is working properly.
   hack:
-    runs-on:
-      group: 8-cores_32GB_Ubuntu Group
+    runs-on: ubuntu-latest
     name: features
     timeout-minutes: 60
     steps:
@@ -103,8 +102,7 @@ jobs:
       - name: cargo hack
         run: make check-features
   test:
-    runs-on:
-      group: 8-cores_32GB_Ubuntu Group
+    runs-on: ubuntu-latest
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
@@ -119,8 +117,7 @@ jobs:
   # it's nice to clearly separate failures of ordinary tests and experimental
   # features.
   test-experimental:
-    runs-on:
-      group: 8-cores_32GB_Ubuntu Group
+    runs-on: ubuntu-latest
     needs: test
     timeout-minutes: 60
     steps:
@@ -131,8 +128,7 @@ jobs:
       - name: Run cargo test --features experimental
         run: cargo test --features experimental
   coverage:
-    runs-on:
-      group: 8-cores_32GB_Ubuntu Group
+    runs-on: ubuntu-latest
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v3
