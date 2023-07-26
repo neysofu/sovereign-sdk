@@ -72,7 +72,6 @@ jobs:
   check-demo-prover:
     runs-on: ubuntu-latest
     name: check demo prover
-    needs: check
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v3
