@@ -39,7 +39,6 @@ env:
   CARGO_TERM_COLOR: always
   RUSTFLAGS: -D warnings
   CARGO_INCREMENTAL: 0
-  CACHE_KEY: ${{ runner.os }}-${{ hashFiles(**/rust-toolchain.toml) }}-${{  }}
 
 # Automatically cancels a job if a new commit if pushed to the same PR, branch, or tag.
 # Source: <https://stackoverflow.com/a/72408109/5148606>
