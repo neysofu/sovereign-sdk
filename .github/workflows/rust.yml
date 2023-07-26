@@ -116,7 +116,8 @@ jobs:
             ~/.cargo/registry/cache/
             target/
             examples/demo-prover/target/
-          key: cargo-hack-${{ hashFiles('**/rust-toolchain.toml') }}
+          # `cargo-hack` can reuse `cargo check`'s cache, so we use the same key.
+          key: cargo-check-${{ hashFiles('**/rust-toolchain.toml') }}
       - name: cargo install cargo-hack
         uses: taiki-e/install-action@cargo-hack
       # intentionally no target specifier; see https://github.com/jonhoo/rust-ci-conf/pull/4
