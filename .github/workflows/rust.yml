@@ -55,7 +55,9 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: check-all-features
-          workspaces: '. -> target\nexamples/demo-prover -> target'
+          workspaces: >-
+            . -> target
+            examples/demo-prover -> target
       - name: Run lint
         run: |
           if ! make lint ; then
@@ -76,7 +78,9 @@ jobs:
       - uses: Swatinem/rust-cache@v2
         with:
           shared-key: check-all-features
-          workspaces: '. -> target\nexamples/demo-prover -> target'
+          workspaces: >-
+            . -> target
+            examples/demo-prover -> target
       - name: Run cargo check
         run: cd examples/demo-prover && cargo check
       - name: Run cargo fmt check
@@ -193,6 +197,8 @@ jobs:
         with:
           # Without this, only workspace crate dependencies are cached.
           cache-all-crates: true
+          # There's nothing in `target/` that we care about here.
+          workspaces: ''
       - run: cargo install cargo-deny
       - run: cargo deny check licenses
   cargo-doc-artifact:
