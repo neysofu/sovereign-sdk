@@ -5,6 +5,8 @@ name: Rust
 # Here's a list of things to keep in mind if you find yourself maintaing this
 # CI:
 #
+# https://docs.github.com/en/actions/using-workflows/caching-dependencies-to-speed-up-workflows#matching-a-cache-key
+#
 # - `rustup show` is an unintuitive yet simple way to install and select your
 #   desired Rust toolchain from `rust-toolchain.toml`.
 #   See:
@@ -36,6 +38,8 @@ on:
 env:
   CARGO_TERM_COLOR: always
   RUSTFLAGS: -D warnings
+  CARGO_INCREMENTAL: 0
+  CACHE_KEY: ${{ runner.os }}-${{ hashFiles(**/rust-toolchain.toml) }}-${{  }}
 
 # Automatically cancels a job if a new commit if pushed to the same PR, branch, or tag.
 # Source: <https://stackoverflow.com/a/72408109/5148606>
@@ -50,14 +54,13 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Rust toolchain
-        run: rustup show
-      - uses: Swatinem/rust-cache@v2
+      - uses: actions/cache@v3
         with:
-          shared-key: check-all-features
-          workspaces: >-
-            . -> target
-            examples/demo-prover -> target
+          path: |
+            ~/.cargo/
+            target/
+            examples/demo-prover/target/
+          key: cargo-check-${{ hashFiles('**/rust-toolchain.toml') }}
       - name: Run lint
         run: |
           if ! make lint ; then
@@ -73,16 +76,16 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Rust toolchain
-        run: rustup show
-      - uses: Swatinem/rust-cache@v2
+      - uses: actions/cache@v3
         with:
-          shared-key: check-all-features
-          workspaces: >-
-            . -> target
-            examples/demo-prover -> target
+          path: |
+            ~/.cargo/
+            target/
+            examples/demo-prover/target/
+          key: cargo-check-${{ hashFiles('**/rust-toolchain.toml') }}
       - name: Run cargo check
-        run: cd examples/demo-prover && cargo check
+        working-directory: examples/demo-prover
+        run: cargo check
       - name: Run cargo fmt check
         run: |
           cd examples/demo-prover;
@@ -97,9 +100,13 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Rust toolchain
-        run: rustup show
-      - uses: Swatinem/rust-cache@v2
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/
+            target/
+            examples/demo-prover/target/
+          key: cargo-hack-${{ hashFiles('**/rust-toolchain.toml') }}
       - name: cargo install cargo-hack
         uses: taiki-e/install-action@cargo-hack
       # intentionally no target specifier; see https://github.com/jonhoo/rust-ci-conf/pull/4
@@ -110,11 +117,13 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Rust toolchain
-        run: rustup show
-      - uses: Swatinem/rust-cache@v2
+      - uses: actions/cache@v3
         with:
-          shared-key: test
+          path: |
+            ~/.cargo/
+            target/
+            examples/demo-prover/target/
+          key: cargo-test-${{ hashFiles('**/rust-toolchain.toml') }}
       - name: Run cargo test
         run: cargo test
   # We could run all tests, including for experimental features, in one job, but
@@ -126,9 +135,13 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
-      - uses: Swatinem/rust-cache@v2
+      - uses: actions/cache@v3
         with:
-          shared-key: test
+          path: |
+            ~/.cargo/
+            target/
+            examples/demo-prover/target/
+          key: cargo-test-${{ hashFiles('**/rust-toolchain.toml') }}
       - name: Run cargo test --features experimental
         run: cargo test --features experimental
   coverage:
@@ -138,9 +151,15 @@ jobs:
       - uses: actions/checkout@v3
         with:
           submodules: true
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/
+            target/
+            examples/demo-prover/target/
+          key: coverage-${{ hashFiles('**/rust-toolchain.toml') }}
       - name: add llvm component
         run: rustup component add llvm-tools-preview
-      - uses: Swatinem/rust-cache@v2
       - name: cargo install cargo-llvm-cov
         uses: taiki-e/install-action@cargo-llvm-cov
       - name: cargo generate-lockfile
@@ -160,6 +179,13 @@ jobs:
       - name: start celestia local
         working-directory: ./examples/demo-rollup
         run: make start
+      - uses: actions/cache@v3
+        with:
+          path: |
+            ~/.cargo/
+            target/
+            examples/demo-prover/target/
+          key: demo-rollup-${{ hashFiles('**/rust-toolchain.toml') }}
       - name: start sovereign demo-rollup
         working-directory: ./examples/demo-rollup
         run: |
@@ -191,15 +217,7 @@ jobs:
     timeout-minutes: 30
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Rust toolchain
-        run: rustup show
-      - uses: Swatinem/rust-cache@v2
-        with:
-          # Without this, only workspace crate dependencies are cached.
-          cache-all-crates: true
-          # There's nothing in `target/` that we care about here.
-          workspaces: ''
-      - run: cargo install cargo-deny
+      - uses: taiki-e/install-action@cargo-deny
       - run: cargo deny check licenses
   cargo-doc-artifact:
     runs-on: ubuntu-latest
@@ -212,11 +230,13 @@ jobs:
     if: (github.ref == 'refs/heads/stable') || (github.ref == 'refs/heads/nightly')
     steps:
       - uses: actions/checkout@v3
-      - name: Setup Rust toolchain
-        run: rustup show
-      - uses: Swatinem/rust-cache@v2
+      - uses: actions/cache@v3
         with:
-          shared-key: check-all-features
+          path: |
+            ~/.cargo/
+            target/
+            examples/demo-prover/target/
+          key: cargo-check-${{ hashFiles('**/rust-toolchain.toml') }}
       # The docs' artifact tends to become quite large with all the
       # dependencies, so we don't include them. We also use `--all-features`
       # because we're reusing the cache from `cargo check --all-features`, so
