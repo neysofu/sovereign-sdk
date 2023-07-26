@@ -83,7 +83,7 @@ jobs:
             ~/.cargo/
             target/
             examples/demo-prover/target/
-          key: cargo-check-${{ hashFiles('**/rust-toolchain.toml') }}
+          key: cargo-check-demo-prover-${{ hashFiles('**/rust-toolchain.toml') }}
       - name: Run cargo check
         working-directory: examples/demo-prover
         run: cargo check
