@@ -57,7 +57,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/.cargo/
+            ~/.cargo/bin/
+            ~/.cargo/git/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
             target/
             examples/demo-prover/target/
           key: cargo-check-${{ hashFiles('**/rust-toolchain.toml') }}
@@ -79,7 +82,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/.cargo/
+            ~/.cargo/bin/
+            ~/.cargo/git/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
             target/
             examples/demo-prover/target/
           key: cargo-check-demo-prover-${{ hashFiles('**/rust-toolchain.toml') }}
@@ -104,7 +110,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/.cargo/
+            ~/.cargo/bin/
+            ~/.cargo/git/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
             target/
             examples/demo-prover/target/
           key: cargo-hack-${{ hashFiles('**/rust-toolchain.toml') }}
@@ -122,7 +131,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/.cargo/
+            ~/.cargo/bin/
+            ~/.cargo/git/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
             target/
             examples/demo-prover/target/
           key: cargo-test-${{ hashFiles('**/rust-toolchain.toml') }}
@@ -141,7 +153,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/.cargo/
+            ~/.cargo/bin/
+            ~/.cargo/git/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
             target/
             examples/demo-prover/target/
           key: cargo-test-${{ hashFiles('**/rust-toolchain.toml') }}
@@ -157,7 +172,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/.cargo/
+            ~/.cargo/bin/
+            ~/.cargo/git/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
             target/
             examples/demo-prover/target/
           key: coverage-${{ hashFiles('**/rust-toolchain.toml') }}
@@ -186,7 +204,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/.cargo/
+            ~/.cargo/bin/
+            ~/.cargo/git/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
             target/
             examples/demo-prover/target/
           key: demo-rollup-${{ hashFiles('**/rust-toolchain.toml') }}
@@ -238,7 +259,10 @@ jobs:
       - uses: actions/cache@v3
         with:
           path: |
-            ~/.cargo/
+            ~/.cargo/bin/
+            ~/.cargo/git/
+            ~/.cargo/registry/index/
+            ~/.cargo/registry/cache/
             target/
             examples/demo-prover/target/
           key: cargo-check-${{ hashFiles('**/rust-toolchain.toml') }}
