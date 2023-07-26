@@ -53,6 +53,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
+      - uses: rui314/setup-mold@v1
       - uses: actions/cache@v3
         with:
           path: |
@@ -75,6 +76,7 @@ jobs:
     timeout-minutes: 90
     steps:
       - uses: actions/checkout@v3
+      - uses: rui314/setup-mold@v1
       - uses: actions/cache@v3
         with:
           path: |
@@ -99,6 +101,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
+      - uses: rui314/setup-mold@v1
       - uses: actions/cache@v3
         with:
           path: |
@@ -116,6 +119,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
+      - uses: rui314/setup-mold@v1
       - uses: actions/cache@v3
         with:
           path: |
@@ -134,6 +138,7 @@ jobs:
     timeout-minutes: 60
     steps:
       - uses: actions/checkout@v3
+      - uses: rui314/setup-mold@v1
       - uses: actions/cache@v3
         with:
           path: |
@@ -175,6 +180,7 @@ jobs:
     runs-on: ubuntu-latest
     steps:
       - uses: actions/checkout@v3
+      - uses: rui314/setup-mold@v1
       - name: start celestia local
         working-directory: ./examples/demo-rollup
         run: make start
@@ -229,6 +235,7 @@ jobs:
     if: (github.ref == 'refs/heads/stable') || (github.ref == 'refs/heads/nightly')
     steps:
       - uses: actions/checkout@v3
+      - uses: rui314/setup-mold@v1
       - uses: actions/cache@v3
         with:
           path: |
