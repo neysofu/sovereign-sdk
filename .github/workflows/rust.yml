@@ -249,11 +249,6 @@ jobs:
     runs-on: ubuntu-latest
     needs: check
     timeout-minutes: 90
-    # We only deploy `cargo doc` to GH pages on `stable`, but let's at least
-    # build it on `nightly` as well to avoid nasty surprises when merging
-    # `nightly` into `stable`. Running it on every PR would be excessive,
-    # though.
-    if: (github.ref == 'refs/heads/stable') || (github.ref == 'refs/heads/nightly')
     steps:
       - uses: actions/checkout@v3
       - uses: rui314/setup-mold@v1
